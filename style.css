@@ -1,0 +1,67 @@
+/* Sharia Halaal Trader – style.css */
+:root{--y:#d4a72c;--r:#047857;--r2:#065f46;--ink:#10231b;--muted:#5a6b62;--line:#e6ebe3}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Naskh Arabic","Geeza Pro",Arial,sans-serif;
+  color:var(--ink);min-height:100vh;min-height:100dvh;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(212,167,44,.28),transparent 50%),
+    radial-gradient(circle at 100% 100%,rgba(16,185,129,.25),transparent 50%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23d4a72c' stroke-opacity='.10'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate(45 28 28)'/%3E%3C/g%3E%3C/svg%3E"),
+    #04261c;
+  -webkit-font-smoothing:antialiased;
+}
+.card{
+  width:100%;max-width:400px;background:#fdfcf7;border-radius:24px;
+  padding:0 18px 18px;text-align:center;position:relative;overflow:hidden;
+  box-shadow:0 22px 50px rgba(0,0,0,.5);
+}
+.band{display:flex;height:6px;margin:0 -18px 20px}
+.band i{flex:1}.band i:first-child{background:var(--y)}.band i:last-child{background:var(--r)}
+.logo{width:96px;height:96px;margin:0 auto 12px;border-radius:50%;box-shadow:0 0 0 4px #fff,0 0 0 6px var(--y),0 10px 22px rgba(4,120,87,.3)}
+.logo{overflow:hidden}
+.logo img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.namaskara{display:inline-block;font-size:13px;font-weight:700;color:#7a5c0e;background:#f8efd4;border-radius:99px;padding:4px 12px;margin-bottom:8px}
+h1{font-size:25px;font-weight:900;letter-spacing:-.3px;line-height:1.15}
+h1 span{color:var(--r)}
+.kn{font-size:15.5px;font-weight:700;color:var(--r2);margin-top:6px;line-height:1.5}
+.sub{color:var(--muted);font-size:14px;margin-top:2px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+.item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 8px;text-align:left;display:flex;gap:8px;align-items:center}
+.item .ic{width:30px;height:30px;flex:0 0 30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.y{background:#f8efd4}.rd{background:#dcf3e8}
+.item b{display:block;font-size:12.5px;line-height:1.2}
+.item small{display:block;font-size:11.5px;color:var(--muted);line-height:1.3;margin-top:1px}
+.cta{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:15px 12px;border-radius:16px;
+  font-size:clamp(13px,4vw,16px);font-weight:900;color:#fff;text-decoration:none;white-space:nowrap;
+  background:linear-gradient(135deg,#10b981,var(--r) 50%,var(--r2));
+  box-shadow:0 10px 24px rgba(4,120,87,.35),inset 0 -3px 0 rgba(0,0,0,.15);
+  -webkit-tap-highlight-color:transparent;
+}
+.cta svg{width:22px;height:22px;flex:0 0 22px}
+.cta.wait{opacity:.7;pointer-events:none}
+.cta.ready{animation:g 1.6s infinite}
+@keyframes g{50%{transform:scale(1.025);box-shadow:0 10px 32px rgba(4,120,87,.55),inset 0 -3px 0 rgba(0,0,0,.15)}}
+.free{margin-top:10px;font-size:12.5px;color:var(--muted)}
+.free b{color:#15803d}
+hr{border:0;border-top:1px solid var(--line);margin:14px 0 10px}
+.disc{font-size:11.5px;color:#7a8794;line-height:1.55}
+.disc b{color:#475569}
+.links{margin-top:8px;font-size:12px}
+.links a{color:#7a8794;text-decoration:none}
+
+.modal{position:fixed;inset:0;background:rgba(4,38,28,.75);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50;animation:fi .2s ease-out}
+.modal[hidden]{display:none}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.mbox{position:relative;background:#fdfcf7;width:100%;max-width:400px;max-height:80vh;overflow-y:auto;border-radius:18px;padding:22px 18px 18px;text-align:left;box-shadow:0 20px 50px rgba(0,0,0,.4);animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+.mbox h2{font-size:19px;color:var(--r2);margin-bottom:2px}
+.mbox small{color:#7a8794;font-size:11.5px}
+.mbox h3{font-size:14px;margin:14px 0 3px}
+.mbox p{font-size:13px;color:#475569;line-height:1.55}
+.mbox a{color:var(--r)}
+.mclose{position:absolute;top:10px;right:10px;width:32px;height:32px;border:0;border-radius:50%;background:#eaf0f5;color:#475569;font-size:15px;cursor:pointer}
+@media (max-width:350px){h1{font-size:22px}.item small{display:none}}
