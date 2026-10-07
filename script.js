@@ -1,24 +1,9 @@
 /* Sharia Halaal Trader – script.js
-   Is file ko <head> me load kiya gaya hai (bina defer), taaki revisit check page dikhne se pehle chale. */
+   Is file ko <head> me load kiya gaya hai (bina defer), taaki Meta Pixel jaldi shuru ho. */
 
-/* ===== 1) Settings + Revisit check ===== */
 var TELEGRAM_LINK    = "https://t.me/+8dmExi9qqfgyNzBl";
-var REVISIT_REDIRECT = true;  // true = pehle join kar chuke log seedha Telegram jaayein, false = sabko page dikhe
 
-// Revisit check: pehle button daba chuka hai to page chhupa do (PageView ke baad Telegram)
 var TEST_MODE = /[?&]test=1/.test(location.search);  // testing: link ke end me ?test=1
-var IS_REVISIT=false;
-(function(){
-  if(!REVISIT_REDIRECT) return;
-  if(TEST_MODE || location.search.indexOf("stay=1")>-1) return;   // test/stay mode me page hamesha dikhe
-  try{ IS_REVISIT = localStorage.getItem("sht_sub")==="1"; }catch(e){}
-  if(!IS_REVISIT) IS_REVISIT = /(?:^|; )sht_sub=1/.test(document.cookie);
-  if(IS_REVISIT){
-    var st=document.createElement("style");
-    st.textContent="html{background:#04261c}body{visibility:hidden}";
-    document.head.appendChild(st);
-  }
-})();
 
 /* ===== 2) Meta Pixel ===== */
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -31,16 +16,6 @@ fbq('set', 'autoConfig', false, '1343437741023605');
 fbq('init', '1343437741023605');
 fbq('track', 'PageView');
 
-// Revisit: Pixel load hokar PageView bhej de, phir Telegram (max 1.5 sec wait)
-if(IS_REVISIT){
-  var go=false, startT=Date.now();
-  function goTG(){ if(go) return; go=true; location.replace(TELEGRAM_LINK); }
-  (function wait(){
-    if(window.fbq && window.fbq.callMethod) return setTimeout(goTG,300);
-    if(Date.now()-startT>1500) return goTG();
-    setTimeout(wait,50);
-  })();
-}
 
 /* ===== 3) Button, Subscribe event, test mode, privacy popup (page load hone ke baad) ===== */
 document.addEventListener("DOMContentLoaded", function(){
@@ -67,18 +42,32 @@ document.addEventListener("DOMContentLoaded", function(){
     cta.addEventListener(ev,function(e){ if(e.isTrusted) touched=true; },{passive:true});
   });
 
+  // ---- Telegram link kholna ----
+  function openTelegram(){ window.location.href=TELEGRAM_LINK; }
+
+  // ---- Join hint popup ----
+  var jh=document.getElementById("joinHint");
+  function showJoinHint(){ if(jh) jh.hidden=false; }
+  function hideJoinHint(){ if(jh) jh.hidden=true; fired=false; }   // band karne par CTA dobara dab sakta hai
+  if(jh){
+    document.getElementById("jhClose").addEventListener("click",hideJoinHint);
+  }
+  window.addEventListener("pageshow",function(e){ if(e.persisted) hideJoinHint(); });
+  document.addEventListener("visibilitychange",function(){ if(!document.hidden && jh && !jh.hidden) hideJoinHint(); });
+
   cta.addEventListener("click",function(e){
     e.preventDefault();
     if(fired) return;
     var realUser = e.isTrusted && touched && (Date.now()-loadedAt) >= CLICK_DELAY*1000 && !navigator.webdriver;
     fired=true;
+    showJoinHint();
     if(TEST_MODE) testMsg(realUser ? "✅ Subscribe event bheja gaya" : "🤖 Bot/fake click – event nahi gaya");
     if(realUser && (TEST_MODE || !alreadySubscribed())){
       var eventId = "sub_" + Date.now() + "_" + Math.random().toString(36).slice(2,10);
       if(window.fbq) fbq('track','Subscribe',{},{eventID:eventId});   // sirf pehli baar
       if(!TEST_MODE) markSubscribed();   // test mode me yaad nahi rakhta, baar-baar test kar sako
     }
-    setTimeout(function(){ window.location.href=TELEGRAM_LINK; }, TEST_MODE ? 1500 : 300);
+    setTimeout(openTelegram, 1500);   // 1.5 sec: user popup padh le
   });
 
   // Back button se wapas aaye to button phir kaam kare
